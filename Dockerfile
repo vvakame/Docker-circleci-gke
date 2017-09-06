@@ -14,6 +14,7 @@ RUN apt-get update && \
         vim \
         curl ca-certificates \
         build-essential git unzip \
+        openjdk-8-jdk-headless \
         python && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -31,6 +32,10 @@ RUN curl -o google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/r
 ENV PATH=/root/.nodebrew/current/bin:$PATH
 RUN curl -L git.io/nodebrew | perl - setup && nodebrew install-binary ${NODEJS_VERSION} && nodebrew use ${NODEJS_VERSION}
 
+# setup openjdk environment
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+
+# setup docker client
 RUN curl -L -o /tmp/docker.tgz https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz && \
     tar -xz -C /tmp -f /tmp/docker.tgz && \
     mv /tmp/docker/* /usr/bin && \
